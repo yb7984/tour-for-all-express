@@ -1,0 +1,16 @@
+/**
+ * Tournament status definition
+ */
+const TOUR_STATUS_PRIVATE = 0;
+const TOUR_STATUS_PUBLIC = 1;
+const TOUR_STATUS_STARTED = 9;
+const TOUR_STATUS_ENDED = 10;
+const TOUR_STATUS_CANCELED = 2;
+
+module.exports = {
+    TOUR_STATUS_PRIVATE,
+    TOUR_STATUS_PUBLIC,
+    TOUR_STATUS_STARTED,
+    TOUR_STATUS_ENDED,
+    TOUR_STATUS_CANCELED
+}

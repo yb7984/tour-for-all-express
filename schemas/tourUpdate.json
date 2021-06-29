@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "image": {
+      "type": "string"
+    },
+    "guaranteed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "price": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "entryFee": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "setting": {
+      "type": "string"
+    },
+    "clockSetting": {
+      "type": "string"
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "isActive": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "required": []
+}

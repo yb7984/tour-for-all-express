@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "term": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "string",
+      "pattern": "^(true|false)?$"
+    },
+    "role": {
+      "type": "string",
+      "pattern": "^(0|1)?$"
+    }
+  },
+  "additionalProperties": false,
+  "required": []
+}

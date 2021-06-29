@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "listType":{
+      "type":"string",
+      "pattern": "^(upcoming|all|running|past|cancel)?$"
+    },
+    "term": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "string",
+      "pattern": "^(true|false)+$"
+    },
+    "status": {
+      "type": "string",
+      "pattern": "^(0|1|9|10)?$"
+    },
+    "minPrice": {
+      "type": "string",
+      "pattern": "^([0-9])+$"
+    },
+    "maxPrice": {
+      "type": "string",
+      "pattern": "^([0-9])+$"
+    },
+    "minGuaranteed": {
+      "type": "string",
+      "pattern": "^([0-9])+$"
+    },
+    "maxGuaranteed": {
+      "type": "string",
+      "pattern": "^([0-9])+$"
+    },
+    "minStart": {
+      "type": "string",
+      "format": "date"
+    },
+    "maxStart": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "additionalProperties": false,
+  "required": []
+}

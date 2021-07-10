@@ -205,7 +205,9 @@ describe("update", function () {
             ...u1,
             ...updateData,
             created: expect.any(Date),
-            updated: expect.any(Date)
+            updated: expect.any(Date),
+            followingTours:[1],
+            followings:["u2"]
         });
     });
 
@@ -216,7 +218,9 @@ describe("update", function () {
         expect(user).toEqual({
             ...u1,
             created: expect.any(Date),
-            updated: expect.any(Date)
+            updated: expect.any(Date),
+            followingTours:[1],
+            followings:["u2"]
         });
         const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
         expect(found.rows.length).toEqual(1);

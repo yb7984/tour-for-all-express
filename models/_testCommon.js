@@ -129,6 +129,7 @@ const t1 = new Tour(
         slug: "t-1",
         title: "t-1",
         creator: "u1",
+        description: "t-description",
         price: 10,
         entryFee: 2,
         start: t1Start,

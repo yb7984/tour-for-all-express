@@ -49,7 +49,7 @@ describe("find", function () {
             page: 1
         });
         expect(tours.tours.length).toEqual(4);
-        expect(tours.tours[3]).toEqual({
+        expect(tours.tours[0]).toEqual({
             ...t1,
             start: expect.any(Date)
         });
@@ -242,14 +242,13 @@ describe("update", function () {
         clockSetting: "{bg:red}"
     };
 
-    // updateData.slug = await Tour.generateSlug(updateData);
-
     test("works", async function () {
         let tour = await Tour.update(t1, updateData);
 
         expect(tour).toEqual({
             ...t1,
-            ...updateData
+            ...updateData,
+            players: expect.any(Object)
         });
     });
 

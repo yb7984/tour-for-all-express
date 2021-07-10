@@ -104,10 +104,10 @@ router.get("/", ensureAdminLoggedIn, async function (req, res, next) {
  *
  * Returns User
  *
- * Authorization required: Current User or Admin
+ * Authorization required: None
  **/
 
-router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.get("/:username", async function (req, res, next) {
     try {
         const user = await User.get(req.params.username);
         return res.json({ user });

@@ -11,6 +11,7 @@ const Tour = require("../models/tour");
 const tourPlayerUpdateSchema = require("../schemas/tourPlayerUpdate.json");
 const TourPlayer = require("../models/tourPlayer");
 const { ensureAdminOrCreator } = require('./helper');
+const { broadcastTourUpdate } = require("./ws");
 
 const router = express.Router();
 
@@ -24,6 +25,8 @@ router.post("/:handle/players/:username", ensureCorrectUserOrAdmin, async functi
         const tour = await Tour.get(req.params.handle);
 
         const result = await TourPlayer.insert(tour.id, req.params.username);
+
+        broadcastTourUpdate(tour.id);
 
         return res.status(201).json({ player: result });
     } catch (err) {
@@ -50,6 +53,8 @@ router.patch("/:handle/players/:username", ensureLoggedIn, async function (req, 
 
         const tourPlayer = await TourPlayer.update(tour.id, req.params.username, req.body);
 
+        broadcastTourUpdate(tour.id);
+
         return res.json({ player: tourPlayer });
     } catch (err) {
         return next(err);
@@ -66,6 +71,8 @@ router.delete("/:handle/players/:username", ensureCorrectUserOrAdmin, async func
         const tour = await Tour.get(req.params.handle);
 
         const result = await TourPlayer.remove(tour.id, req.params.username);
+
+        broadcastTourUpdate(tour.id);
 
         return res.json({ deleted: req.params.username });
     } catch (err) {

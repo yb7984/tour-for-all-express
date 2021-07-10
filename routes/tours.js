@@ -1,6 +1,6 @@
 "use strict";
 
-/** Routes for users. */
+/** Routes for tours. */
 
 const jsonschema = require("jsonschema");
 
@@ -12,8 +12,6 @@ const Tour = require("../models/tour");
 const tourSearchSchema = require("../schemas/tourSearch.json");
 const tourNewSchema = require("../schemas/tourNew.json");
 const tourUpdateSchema = require("../schemas/tourUpdate.json");
-const { ROLE_ADMIN } = require("../models/role");
-const { TOUR_STATUS_PRIVATE, TOUR_STATUS_CANCELED } = require("../models/tourStatus");
 const { ensureAdminOrCreator } = require('./helper');
 
 const router = express.Router();

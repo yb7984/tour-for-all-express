@@ -15,10 +15,12 @@
       "type": "integer",
       "minimum": 0
     },
+    "stack": {
+      "type": "integer",
+      "minimum": 0
+    },
     "description": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 30
+      "type": "string"
     },
     "price": {
       "type": "integer",

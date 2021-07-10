@@ -35,6 +35,7 @@ CREATE TABLE "tours"
   "title" text NOT NULL,
   "image" text,
   "guaranteed" integer NOT NULL DEFAULT 0,
+  "stack" integer NOT NULL DEFAULT 10000,
   "description" text,
   "creator" varchar(20) NOT NULL,
   "price" integer NOT NULL DEFAULT 0 CHECK(price>=0),

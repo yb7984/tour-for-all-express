@@ -314,7 +314,10 @@ class User {
 
         const user = new User(result.rows[0]);
 
-        // delete user.password;
+        await User.setFollowings(user);
+        await User.setFollowers(user);
+        await User.setFollowingTours(user);
+
         return user;
     }
 

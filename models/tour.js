@@ -13,13 +13,10 @@ const {
 const { filterPositiveInt } = require("../helpers/utils");
 const TourPlayer = require("./tourPlayer");
 
-const FIELDS_SELECT = `id, slug, title, image, guaranteed,
+const FIELDS_SELECT = `id, slug, title, image, guaranteed, stack,
     description, creator, price, entry_fee as "entryFee", start, 
     setting, clock_setting AS "clockSetting", status,
     start_time AS "startTime", end_time AS "endTime", is_active AS "isActive"`;
-
-const FIELDS_SELECT_LIST = `id, slug, title, creator, price, 
-    entry_fee AS "entryFee", start, status, is_active AS "isActive"`;
 
 /** Related functions for tours. */
 class Tour {
@@ -28,6 +25,7 @@ class Tour {
     title;
     image = "";
     guaranteed = 0;
+    stack = 10000;
     description = "";
     creator;
     price = 0;
@@ -91,12 +89,16 @@ class Tour {
      * @param {Object} params
      * @param {Integer} page
      * @param {Integer} perPage
-     * @param {string} listType could be one of these all,upcoming,past,runing,canceled
+     * @param {string} listType could be one of these all,private,upcoming,past,runing,canceled
      * @returns {tours:[Tour,...] , total , perPage, page}
      */
     static async find(params = {}, page = 1, perPage = 20, listType = "all") {
+        // const username = params["username"] && params["username"];
 
-        const searchParams = Object.entries(params).map(([key, value]) => {
+        const newParams = { ...params };
+        delete newParams["username"];
+
+        const searchParams = Object.entries(newParams).map(([key, value]) => {
             switch (key) {
                 case "term":
                     return {
@@ -158,17 +160,21 @@ class Tour {
         });
         let { wheres, values } = sqlForSearch(searchParams);
 
-        let orderBy = "id DESC";
+        let orderBy = "start DESC";
         let condition = "";
 
         switch (listType) {
+            case "private":
+                condition = `"status" = ${TOUR_STATUS_PRIVATE} AND "creator" = '${params["creator"]}'`;
+                orderBy = "start";
+                break;
             case "upcoming":
                 condition = `"status" IN (${TOUR_STATUS_PUBLIC} , ${TOUR_STATUS_STARTED})`;
                 orderBy = "start";
                 break;
             case "past":
                 condition = `"status" = ${TOUR_STATUS_ENDED}`;
-                orderBy = "start ASC";
+                orderBy = "start DESC";
                 break;
             case "running":
                 condition = `"status" = ${TOUR_STATUS_STARTED}`;
@@ -176,7 +182,15 @@ class Tour {
                 break;
             case "canceled":
                 condition = `"status" = ${TOUR_STATUS_CANCELED}`;
-                orderBy = "id DESC";
+                orderBy = "start DESC";
+                break;
+            case "favorite":
+                condition = `"id" IN (SELECT "tour_id" FROM users_tours_follow WHERE "username" = '${params["username"]}')`;
+                orderBy = "start DESC";
+                break;
+            case "joined":
+                condition = `"id" IN (SELECT "tour_id" FROM tours_players WHERE "username" = '${params["username"]}')`;
+                orderBy = "start DESC";
                 break;
             default:
                 break;
@@ -199,7 +213,7 @@ class Tour {
         if (total >= perPage * (page - 1)) {
             const result = await db.query(
                 `
-            SELECT ${FIELDS_SELECT_LIST}
+            SELECT ${FIELDS_SELECT}
             FROM tours 
             ${wheres.length === 0 ? "" : "WHERE " + wheres}
             ORDER BY ${orderBy}
@@ -273,6 +287,7 @@ class Tour {
             title,
             image,
             guaranteed,
+            stack,
             description,
             creator,
             price,
@@ -283,7 +298,11 @@ class Tour {
             status
         } = tour;
 
-        let slug = await Tour.generateSlug(tour);
+        let slug = tour.slug;
+
+        if (!slug || slug.length === 0) {
+            slug = await Tour.generateSlug(tour);
+        }
 
         const result = await db.query(
             `INSERT INTO tours
@@ -292,6 +311,7 @@ class Tour {
                     title,
                     image,
                     guaranteed,
+                    stack,
                     description,
                     creator,
                     price,
@@ -301,13 +321,14 @@ class Tour {
                     clock_setting,
                     status
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                 RETURNING ${FIELDS_SELECT}`,
             [
                 slug,
                 title,
                 image,
                 guaranteed,
+                stack,
                 description,
                 creator,
                 price,
@@ -332,7 +353,7 @@ class Tour {
      * @param {Tour} tour
      * @param {Object} data
      * Data can include:
-     *         { slug, title, image, guaranteed, description,
+     *         { slug, title, image, guaranteed,stack, description,
                     creator, price, entryFee, start, setting,clockSetting,
                     status,startTime,endTime, isActive,}
      *
@@ -347,14 +368,6 @@ class Tour {
     static async update(tour, data) {
         if (!tour) {
             throw new NotFoundError(`No tour`);
-        }
-
-        if (
-            (data.title && data.title != tour) ||
-            (data.start && data.start.substr(0, 10) !== tour.start.toISOString().substr(0, 10))
-        ) {
-            //if title or start date change, change slug
-            data["slug"] = await Tour.generateSlug(tour);
         }
 
         const { setCols, values } = sqlForPartialUpdate(
@@ -380,7 +393,15 @@ class Tour {
             throw new NotFoundError(`No tour: ${tour.id}`);
         }
 
-        return new Tour(result.rows[0]);
+        const newTour = new Tour(result.rows[0]);
+        const tourPlayers = await TourPlayer.list(newTour.id);
+
+        newTour.players = {};
+        tourPlayers.forEach(player => {
+            newTour.players[player.username] = player;
+        });
+
+        return newTour;
     }
 
     /**

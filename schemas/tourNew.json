@@ -3,6 +3,10 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "properties": {
+    "slug": {
+      "type": "string",
+      "maxLength": 50
+    },
     "title": {
       "type": "string",
       "minLength": 1,
@@ -15,10 +19,12 @@
       "type": "integer",
       "minimum": 0
     },
+    "stack": {
+      "type": "integer",
+      "minimum": 0
+    },
     "description": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 30
+      "type": "string"
     },
     "price": {
       "type": "integer",

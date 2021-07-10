@@ -291,18 +291,20 @@ describe("GET /users/:username", function () {
         });
     });
 
-    test("unauth for anon", async function () {
+    test("works for anon", async function () {
         const resp = await request(app)
-            .get(`/users/u1`);
-        expect(resp.statusCode).toEqual(401);
-    });
-
-
-    test("unauth for not the same user", async function () {
-        const resp = await request(app)
-            .get(`/users/u1`)
+            .get(`/users/u2`)
             .set("authorization", `Bearer ${u2Token}`);
-        expect(resp.statusCode).toEqual(401);
+        expect(resp.body).toEqual({
+            user: {
+                ...u2,
+                followingTours: [],
+                followings: [],
+                followers: ["u1"],
+                created: expect.any(String),
+                updated: expect.any(String)
+            },
+        });
     });
 
     test("not found if user not found", async function () {
@@ -328,7 +330,9 @@ describe("PATCH /users/:username", () => {
                 ...u1,
                 created: expect.any(String),
                 updated: expect.any(String),
-                firstName: "New"
+                firstName: "New",
+                followingTours:[1],
+                followings:["u2"]
             },
         });
     });
@@ -346,7 +350,8 @@ describe("PATCH /users/:username", () => {
                 ...u2,
                 created: expect.any(String),
                 updated: expect.any(String),
-                firstName: "New"
+                firstName: "New",
+                followers:["u1"]
             },
         });
     });
@@ -402,7 +407,9 @@ describe("PATCH /users/:username", () => {
             user: {
                 ...u1,
                 created: expect.any(String),
-                updated: expect.any(String)
+                updated: expect.any(String),
+                followingTours:[1],
+                followings:["u2"]
             }
         });
         const isSuccessful = await User.authenticate("u1", "new-password");

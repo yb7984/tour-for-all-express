@@ -17,6 +17,8 @@
   "author": "Sunbao Wu",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.943.0",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",

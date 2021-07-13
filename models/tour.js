@@ -393,7 +393,27 @@ class Tour {
             throw new NotFoundError(`No tour: ${tour.id}`);
         }
 
-        const newTour = new Tour(result.rows[0]);
+        let newTour = new Tour(result.rows[0]);
+
+        // update the start or end time when status changed
+        if (newTour.status !== tour.status) {
+            let sql;
+            if (newTour.status === TOUR_STATUS_STARTED) {
+                sql = "UPDATE tours SET start_time = NOW() WHERE id = $1";
+            } else if (newTour.status === TOUR_STATUS_ENDED) {
+                sql = "UPDATE tours SET end_time = NOW() WHERE id = $1";
+            }
+            if (sql.length > 0) {
+                sql += ` RETURNING ${FIELDS_SELECT}`;
+                const newResult = await db.query(sql, [tour.id]);
+
+                if (newResult.rows.length > 0) {
+                    newTour = new Tour(newResult.rows[0]);
+                }
+            }
+        }
+
+
         const tourPlayers = await TourPlayer.list(newTour.id);
 
         newTour.players = {};

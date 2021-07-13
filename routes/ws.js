@@ -1,3 +1,5 @@
+/** functions for setting current web socket handler */
+
 const WS_SETTING = {
     expressWs: null
 }

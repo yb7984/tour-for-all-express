@@ -47,9 +47,9 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 
 
 
-/** GET / => { tours: [ Tour, ... ] }
+/** GET / => { tours: [ Tour, ... ],  total, perPage, page}
  *
- * Returns list of all users.
+ * Returns list of tours.
  *
  * Authorization required: none
  **/

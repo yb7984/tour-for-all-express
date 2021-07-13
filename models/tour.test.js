@@ -252,6 +252,33 @@ describe("update", function () {
         });
     });
 
+
+    test("works with update status to started", async function () {
+        updateData.status = TOUR_STATUS_STARTED;
+        let tour = await Tour.update(t1, updateData);
+
+        expect(tour).toEqual({
+            ...t1,
+            ...updateData,
+            startTime: expect.any(Date),
+            endTime: null,
+            players: expect.any(Object)
+        });
+    });
+
+
+    test("works with update status to ended", async function () {
+        updateData.status = TOUR_STATUS_ENDED;
+        let tour = await Tour.update(t1, updateData);
+
+        expect(tour).toEqual({
+            ...t1,
+            ...updateData,
+            endTime: expect.any(Date),
+            players: expect.any(Object)
+        });
+    });
+
     test("not found if no such tour", async function () {
         try {
             await Tour.update(null, {

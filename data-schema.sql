@@ -49,20 +49,6 @@ CREATE TABLE "tours"
   "is_active" boolean NOT NULL DEFAULT true
 );
 
-CREATE TABLE "tours_templates"
-(
-  "id" SERIAL PRIMARY KEY,
-  "title" text NOT NULL,
-  "image" text,
-  "guaranteed" integer NOT NULL DEFAULT 0,
-  "description" text,
-  "creator" varchar(20) NOT NULL,
-  "price" integer NOT NULL DEFAULT 0 CHECK(price>=0),
-  "entry_fee" integer NOT NULL DEFAULT 0 CHECK(entry_fee>=0),
-  "setting" text NOT NULL DEFAULT '',
-  "is_public" boolean NOT NULL DEFAULT FALSE
-);
-
 CREATE TABLE "tours_players"
 (
   "tour_id" SERIAL,
@@ -89,8 +75,6 @@ ON DELETE CASCADE;
 
 ALTER TABLE "tours_players" ADD FOREIGN KEY ("username") REFERENCES "users" ("username")
 ON DELETE CASCADE;
-
-ALTER TABLE "tours_templates" ADD FOREIGN KEY ("creator") REFERENCES "users" ("username") ON DELETE CASCADE;
 
 
 CREATE INDEX idx_tours_slug ON tours(slug);

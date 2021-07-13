@@ -14,21 +14,19 @@ async function seedAll() {
     await db.query("DELETE FROM users_tours_follow");
     await db.query("DELETE FROM users_follow");
     await db.query("DELETE FROM tours_players");
-    await db.query("DELETE FROM tours_templates");
     await db.query("DELETE FROM tours");
     await db.query("DELETE FROM users");
 
 
     await db.query("ALTER SEQUENCE tours_id_seq RESTART WITH 1");
-    await db.query("ALTER SEQUENCE tours_templates_id_seq RESTART WITH 1");
 
     await db.query(`
                 INSERT INTO users(username,
                                                     password,
                                                     first_name,
                                                     last_name,
-                                                    email)
-                VALUES ('admin', $1, 'admin', 'admin', 'bobowu@outlook.com')
+                                                    email, role)
+                VALUES ('admin', $1, 'admin', 'admin', 'bobowu@outlook.com', 1)
                 RETURNING username`,
         [
             await bcrypt.hash("password", BCRYPT_WORK_FACTOR)

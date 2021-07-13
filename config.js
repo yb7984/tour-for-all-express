@@ -25,6 +25,7 @@ const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads";
 const UPLOAD_URL = process.env.UPLOAD_URL || "/uploads";
 const S3_UPLOAD = !!process.env.S3_UPLOAD || false;
+const AWS_S3_BUCKET = process.env.AWS_S3_BUCKET || "tourforall";
 
 console.log("tour_for_all Config:".green);
 console.log("SECRET_KEY:".yellow, SECRET_KEY);
@@ -40,5 +41,6 @@ module.exports = {
     getDatabaseUri,
     UPLOAD_DIR,
     UPLOAD_URL,
-    S3_UPLOAD
+    S3_UPLOAD,
+    AWS_S3_BUCKET
 };

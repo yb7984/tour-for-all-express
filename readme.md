@@ -662,6 +662,27 @@ Messages
 }
 ```
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+| param                   | default value                                                 | description                                |
+| :---------------------- | :------------------------------------------------------------ | ------------------------------------------ |
+| `SECRET_KEY`            | secret-dev                                                    | Secret key for this app                    |
+| `PORT`                  | 3002                                                          | the port running for this app              |
+| `NODE_ENV`              |                                                               | set to "test" when doing the test          |
+| `DATABASE_URL`          | tour_for_all_test when testing, tour_for_all when not testing |                                            |
+| `UPLOAD_DIR`            | uploads                                                       | the folder name for uploading data         |
+| `UPLOAD_URL`            | /uploads                                                      | the url for upload folder                  |
+| `S3_UPLOAD`             | false                                                         | if the app using amazon s3 to upload image |
+| `AWS_ACCESS_KEY_ID`     |                                                               | access key id for amazon service           |
+| `AWS_SECRET_ACCESS_KEY` |                                                               | access key for amazon service              |
+| `AWS_S3_BUCKET`         | tourforall                                                    | amazon s3 bucket name                      |
+
+
+
+
+
+  
 
 
 

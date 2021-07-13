@@ -5,7 +5,7 @@ const express = require("express");
 const router = new express.Router();
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
-const { UPLOAD_DIR, UPLOAD_URL, S3_UPLOAD } = require("../config");
+const { UPLOAD_DIR, UPLOAD_URL, S3_UPLOAD, AWS_S3_BUCKET } = require("../config");
 const fs = require("fs");
 
 /** POST /files    { file1, file2, ... } => { [key]:{url, fileName}, ... }
@@ -67,7 +67,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  * @param {String} folder 
  * @param {String} bucket 
  */
-async function uploadToS3(file, folder = "null", bucket = "tourforall") {
+async function uploadToS3(file, folder = "null", bucket = AWS_S3_BUCKET) {
 
     // Load the AWS SDK for Node.js
     const AWS = require('aws-sdk');

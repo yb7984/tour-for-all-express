@@ -52,11 +52,11 @@ Linkedin: [https://www.linkedin.com/in/sunbao-wu/](https://www.linkedin.com/in/s
 ## Screen shot & Video
 - Running Clock
   
-  [![Running Clock](../tour-for-all-react/src/images/tourforall-clock.gif)]
+  [![Running Clock](./images/tourforall-clock.gif)]
 
 - Copy Tournament
   
-  [![Copy Tournament](../tour-for-all-react/src/images/tourforall-copy.gif)]
+  [![Copy Tournament](./images/tourforall-copy.gif)]
   
   
 ## Components
@@ -65,7 +65,7 @@ Please check it out at [tour-for-all-react](../tour-for-all-react).
 
 ## Database schema
 
-![Database schema](../tour-for-all-react/dataschema.png)
+![Database schema](./images/dataschema.png)
 
 
 ## API Reference

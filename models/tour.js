@@ -403,7 +403,7 @@ class Tour {
             } else if (newTour.status === TOUR_STATUS_ENDED) {
                 sql = "UPDATE tours SET end_time = NOW() WHERE id = $1";
             }
-            if (sql.length > 0) {
+            if (sql) {
                 sql += ` RETURNING ${FIELDS_SELECT}`;
                 const newResult = await db.query(sql, [tour.id]);
 

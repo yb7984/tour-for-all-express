@@ -35,9 +35,9 @@ async function seedAll() {
 
     const result = await axios.get("https://randomuser.me/api/?results=50");
 
-    password = await bcrypt.hash("password", BCRYPT_WORK_FACTOR);
 
     const usernames = ["admin"];
+    const password = "password";
     for (const item of result.data.results) {
         const username = item.login.username;
         const user = {

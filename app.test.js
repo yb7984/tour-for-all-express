@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = require("./app");
 const db = require("./db");
 
+console.error = console.log;
 
 test("not found for site 404", async function () {
     const resp = await request(app).get("/no-such-path");

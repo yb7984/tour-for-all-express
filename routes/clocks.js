@@ -28,7 +28,7 @@ async function clocksRouteFunction(ws, req, next) {
                 try {
                     await user.handleMessage(data);
                 } catch (err) {
-                    console.error(err);
+                    if (process.env.NODE_ENV !== "test") console.error(err);
                 }
             });
 
@@ -36,12 +36,12 @@ async function clocksRouteFunction(ws, req, next) {
                 try {
                     user.handleClose();
                 } catch (err) {
-                    console.error(err);
+                    if (process.env.NODE_ENV !== "test") console.error(err);
                 }
             });
         }
     } catch (err) {
-        console.error(err);
+        if (process.env.NODE_ENV !== "test") console.error(err);
     }
 }
 
